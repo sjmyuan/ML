@@ -3,25 +3,26 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
 \begin{document}
 
-\def\layersep{2.5cm}
+\def\layersep{3.5cm}
 
 \begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
     \tikzstyle{every pin edge}=[<-,shorten <=1pt]
-    \tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
+    \tikzstyle{neuron}=[shape=circle split,fill=black!25,thick,minimum size=1.8cm,inner sep=0pt]
     \tikzstyle{input neuron}=[neuron, fill=green!50];
     \tikzstyle{output neuron}=[neuron, fill=red!50];
     \tikzstyle{hidden neuron}=[neuron, fill=blue!50];
     \tikzstyle{annot} = [text width=4em, text centered]
 
-    \node[input neuron] (INPUT) at (0,0) {};
-    \node[hidden neuron,right of=INPUT] (HIDE) {};
-    \node[output neuron,right of=HIDE] (OUTPUT) {};
+    \node[input neuron,rotate=90] (INPUT) at (0,0) { \rotatebox{-90}{$U^{k-1}$} \nodepart{lower} \rotatebox{-90}{$X^{k-1}$}};
+    \node[hidden neuron,right of=INPUT,rotate=90] (HIDE) {\rotatebox{-90}{$U^{k}$} \nodepart{lower} \rotatebox{-90}{$X^{k}$}};
+    \node[output neuron,right of=HIDE,rotate=90] (OUTPUT) {\rotatebox{-90}{$U^{k+1}$} \nodepart{lower} \rotatebox{-90}{$X^{k+1}$}};
     \draw (INPUT) -- (HIDE) node[midway,sloped,above] {$W^k$};
 	\draw (HIDE) -- (OUTPUT) node[midway,sloped,above] {$W^{k+1}$};
 
-    \node[annot,above of=HIDE,node distance=1cm](ha)  {$k$};
+    \node[annot,above of=HIDE,node distance=2cm](ha)  {$k$};
     \node[annot,left of=ha]  {$k-1$};
     \node[annot,right of=ha]  {$k+1$};
     
