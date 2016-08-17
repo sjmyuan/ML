@@ -1,0 +1,372 @@
+\documentclass[10pt]{beamer}
+\usetheme[
+%%% option passed to the outer theme
+%    progressstyle=fixedCircCnt,   % fixedCircCnt, movingCircCnt (moving is deault)
+  ]{Feather}
+  
+% If you want to change the colors of the various elements in the theme, edit and uncomment the following lines
+
+% Change the bar colors:
+%\setbeamercolor{Feather}{fg=red!20,bg=red}
+
+% Change the color of the structural elements:
+%\setbeamercolor{structure}{fg=red}
+
+% Change the frame title text color:
+%\setbeamercolor{frametitle}{fg=blue}
+
+% Change the normal text color background:
+%\setbeamercolor{normal text}{fg=black,bg=gray!10}
+
+%-------------------------------------------------------
+% INCLUDE PACKAGES
+%-------------------------------------------------------
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{animate}
+\usepackage{ifthen}
+\usepackage{pgfplots}
+
+\pgfplotsset{compat=1.11}
+%-------------------------------------------------------
+% DEFFINING AND REDEFINING COMMANDS
+%-------------------------------------------------------
+
+% colored hyperlinks
+\newcommand{\chref}[2]{
+  \href{#1}{{\usebeamercolor[bg]{Feather}#2}}
+}
+
+%-------------------------------------------------------
+% INFORMATION IN THE TITLE PAGE
+%-------------------------------------------------------
+
+\title[] % [] is optional - is placed on the bottom of the sidebar on every slide
+{ % is placed on the title page
+      \textbf{LaTex Diagram}
+}
+
+\subtitle[The Feather Beamer Theme]
+{
+      \textbf{v. 1.0.0}
+}
+
+\author[jiaming.shang]
+{      Jiaming Shang 
+      {\ttfamily jmshang@thoughtworks.com}
+}
+
+\institute[]
+{
+      %Faculty of Mathematics, Informatics and Information Technologies\\
+      %Plovdiv University ``Paisii Hilendarski''\\
+  
+  %there must be an empty line above this line - otherwise some unwanted space is added between the university and the country (I do not know why;( )
+}
+
+\date{\today}
+
+%-------------------------------------------------------
+% THE BODY OF THE PRESENTATION
+%-------------------------------------------------------
+
+\begin{document}
+
+%-------------------------------------------------------
+% THE TITLEPAGE
+%-------------------------------------------------------
+
+{\1% % this is the name of the PDF file for the background
+\begin{frame}[plain,noframenumbering] % the plain option removes the header from the title page, noframenumbering removes the numbering of this frame only
+  \titlepage % call the title page information from above
+\end{frame}}
+
+
+\begin{frame}{Content}{}
+\tableofcontents
+\end{frame}
+
+%-------------------------------------------------------
+\section{Hello World}
+%-------------------------------------------------------
+\begin{frame}{Hello World}
+%-------------------------------------------------------
+\begin{animateinline}[autoplay,loop]{15}%
+   \multiframe{36}{ rangle=0+10}{%
+   \begin{tikzpicture}
+   \begin{axis}[
+    set layers,
+    x=1.4cm,y=1.4cm,
+    xmin=-3.7, xmax=4.2,
+    ymin=-1.5, ymax=1.5,
+    axis lines=center,
+    axis on top,
+    xtick={1,2,3,4},
+    ytick={-1,-.5,.5,1},
+    xticklabels={$90^{\circ} (\pi/2)$, $180^{\circ} (\pi)$, $270^{\circ} (3\pi/2)$,$360^{\circ} (2\pi)$},
+    xticklabel style={font=\tiny},
+    yticklabels={-1,-0.5,0.5,1},
+    ylabel={$\sin(x)$}, y label style={anchor=west},
+    xlabel={$x$}, x label style={anchor=south},
+   ]
+    % fill circle and plot
+      \fill[blue!20] (-1,0) arc (0:\rangle:1) -- (-2,0) -- cycle;
+      \fill[blue!20] plot[smooth,domain=0:\rangle] (\x/90,{sin(\x)}) |- (0,0);
+      
+      % draw connection
+      \draw (-2,0) +(\rangle:1.4cm) circle (2pt) -- (\rangle/90,{sin(\rangle)}) circle (2pt);
+      
+      % draw plot and circle outline
+      \draw plot[smooth,domain=0:360] (\x/90,{sin(\x)});
+      \draw (-2,0) circle (1); 
+   
+   \end{axis} 
+
+   \end{tikzpicture}%
+   }
+\end{animateinline}%
+\end{frame}
+
+%-------------------------------------------------------
+\section{Diagram}
+%-------------------------------------------------------
+\subsection{Path}
+\begin{frame}{Diagram}{Path}
+%-------------------------------------------------------
+\end{frame}
+
+%-------------------------------------------------------
+\subsection{Node}
+\begin{frame}{Diagram}{Node}
+%-------------------------------------------------------
+\end{frame}
+
+
+%-------------------------------------------------------
+\section{Animation}
+%-------------------------------------------------------
+\subsection{PDF}
+\begin{frame}{Animation}{PDF}
+%-------------------------------------------------------
+\end{frame}
+
+%-------------------------------------------------------
+\subsection{GIF}
+\begin{frame}{Animation}{GIF}
+%-------------------------------------------------------
+\begin{columns}\begin{column}{6cm}
+\begin{animateinline}[poster=first,controls]{8}%
+   \multiframe{21}{rt=0+.1,icount=1+1,rvo=3+0}{%
+%rt is the time and rvo the initial velocity, in units in which g=2.
+   \begin{tikzpicture}[scale=.75]
+      \clip (-.3,-.3) rectangle (9,7);
+      \draw[ultra thick,-latex] (0,.5) -- node[above left]{$\vec{v}_0$} (1.5,2);
+      \node[draw=gray,name=tar0,text=gray,dashed,outer sep=6pt] at (6,6)  
+                                                                      {target};
+      \node[draw=red,fill=white,name=tar,text=red,outer sep=6pt] at 
+                                                        (6,6-\rt*\rt) {target}; 
+      \draw[blue] (0,0) circle (3pt);
+      \ifthenelse{\icount > 1}% 
+         {\draw[ultra thick,blue,->] (0,0) -- (\rvo*\rt,\rvo*\rt);
+          \foreach \x in {.0,.1,...,\rt} \draw[blue] 
+                                    (\rvo*\x,\rvo*\x-\x*\x) circle (3pt);}{}
+      \ifthenelse{\icount > 5}%
+         {\draw[ultra thick,blue,->,shorten < =5pt] 
+                      (\rvo*\rt,\rvo*\rt) -- (\rvo*\rt,\rvo*\rt-\rt*\rt);}{}
+      \ifthenelse{\icount > 7}
+         {\draw[decorate,decoration={brace,amplitude=2mm},red] 
+                                       (tar0.east) -- (tar.east);}{}
+      \ifthenelse{\icount > 14}
+         {\node[text=blue] at (4,4.8) {$\vec{v}_0 t$};
+          \node[text=blue] at (\rvo*\rt-.8,1.5+\rt) {$-\frac{gt^2}{2}\hat{j}$};
+          \node[text=red] at (7.9,6-.5*\rt*\rt) {$\frac{gt^2}{2}$};
+          \node[fill=yellow!20] at (2,6.5) 
+                          {$\vec{r}=\vec{v}_0 t-\frac{gt^2}{2}\hat{j}$};}{}
+   \end{tikzpicture}%
+   }
+\end{animateinline}
+%
+\end{column}\begin{column}{6cm}
+\begin{animateinline}[poster=first,controls]{8}%
+   \multiframe{16}{rt=0+.1,icount=1+1,rvo=4+0}{%
+   \begin{tikzpicture}[scale=.75]
+      \clip (-.3,-.3) rectangle (9,7);
+      \draw[ultra thick,-latex] (0,.5) -- node[above left]{$\vec{v}_0$} (2,2.5);
+      \node[draw=gray,text=gray,dashed,outer sep=6pt] at (6,6) {target};
+          \node[draw=red,fill=white,text=red,outer sep=6pt] at 
+                                                        (6,6-\rt*\rt) {target}; 
+      \draw[blue] (0,0) circle (3pt);
+      \ifthenelse{\icount > 1}%
+         {\draw[ultra thick,blue,->] (0,0) -- (\rvo*\rt,\rvo*\rt);
+          \foreach \x in {.0,.1,...,\rt} \draw[blue] 
+                                   (\rvo*\x,\rvo*\x-\x*\x) circle (3pt);}{}
+      \ifthenelse{\icount > 5}%
+         {\draw[ultra thick,blue,->,shorten < =5pt] 
+                      (\rvo*\rt,\rvo*\rt) -- (\rvo*\rt,\rvo*\rt-\rt*\rt);}{}
+   \end{tikzpicture}%
+   }%
+\end{animateinline}
+\end{column}\end{columns}
+\end{frame}
+
+
+
+%-------------------------------------------------------
+\section{Introduction}
+%-------------------------------------------------------
+\subsection{License}
+\begin{frame}{Introduction}{License}
+%-------------------------------------------------------
+
+  \begin{itemize}
+    \item<1-> The Feather image is not covered by copyright rules. I have used the image from \chref{http://www.vectors-free.com/}{http://www.vectors-free.com/}. You are allowed to use the Feather image for any purposes.
+    \item<2-> The rest of the theme is provided under the GNU General Public License v. 3 (GPLv3) \chref{http://www.gnu.org/licenses/}{http://www.gnu.org/licenses/}. This means that you can redistribute it and/or modify it under the same license. 
+  \end{itemize}
+\end{frame}
+
+%-------------------------------------------------------
+\section{Installation}
+%-------------------------------------------------------
+\subsection{Source files}
+\begin{frame}{Installation}{Source files}
+%-------------------------------------------------------
+
+\begin{block}{}
+The theme contains 4 source files:
+  \begin{itemize}
+    \item {\tt beamercolorthemeFeather.sty}
+    \item {\tt beamerouterthemeFeather.sty}
+    \item {\tt beamerinnerthemeFeather.sty}
+    \item {\tt beamerthemeFeather.sty}
+  \end{itemize}
+\end{block}
+\end{frame}
+
+%-------------------------------------------------------
+\subsection{Local and Global installation}
+\begin{frame}{Installation}{Local and Global installation}
+%-------------------------------------------------------
+  The theme can be installed for \textbf{local} or \textbf{global} use.
+  \pause
+  \begin{block}{Local Installation}
+  \begin{itemize}    
+    \item Local installation is the simplest way of installing the theme. 
+    \item You need to placing the 4 source files in the same folder as your presentation. When you download the theme, the 4 theme files are located in the {\tt local} folder.
+  \end{itemize}
+  \end{block}
+
+  \begin{block}{Global Installation}
+  \begin{itemize}
+     \item If you wish to make the theme globally available, you must put the files in your local latex directory tree. The location of the root of the local directory tree depends on your operating system and the latex distribution. 
+     \item Detailed steps on how to proceed installation under various operating systems can be found at Beamer documentation.
+  \end{itemize}
+  \end{block}
+\end{frame}
+     
+
+%-------------------------------------------------------
+\subsection{Required Packages}
+\begin{frame}{Installation}{Required Packages}
+%-------------------------------------------------------
+
+  For using the Feather Theme you will need the Bemaer class installed and the following 2 packages
+  \begin{itemize}
+    \item TikZ\footnote{TikZ is a package for creating beautiful graphics. Have a look at these \chref{http://www.texample.net/tikz/examples/}{online examples} or the \chref{http://tug.ctan.org/tex-archive/graphics/pgf/base/doc/generic/pgf/pgfmanual.pdf}{pgf user manual}.}
+    \item calc
+  \end{itemize}
+  Due to the fact that the packages are very common they should be included in your latex distribution in the first place.
+\end{frame}
+
+%-------------------------------------------------------
+\section{User Interface}
+\subsection{Loading the Theme and Theme Options}
+\begin{frame}{User Interface}{Loading the Theme and Theme Options}
+%-------------------------------------------------------
+
+  \begin{block}{The Presentation Theme}
+    The Feather Theme can be loaded in a familiar way. In the reamble of your {\tt tex} file you must type\\ \vspace{5pt} 
+    {\tt \textbackslash usetheme[<options>]\{Feather\}}\\ \vspace{5pt} 
+    The presentation theme loads the inner, outer and color Feather theme files and passes the {\tt <options>} on to these files.
+  \end{block}
+  \begin{block}{The Inner and Outher Themes}
+    If you wish you can load only the inner, or the outher theme directly by\\ \vspace{5pt} 
+    {\tt \textbackslash useinnertheme\{Feather\}} (and it has no options)\\ \vspace{5pt} 
+    {\tt \textbackslash useoutertheme[<options>]\{Feather\}} (it has one option)\\
+    \hspace{20pt}{\tt progressstyle=\{fixedCircCnt or movingCircCnt\}} \\
+    \begin{itemize}
+    \item which set how the progress is illustrated;
+    \item the value {\tt movingCircCnt} is the default.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{User Interface}{Loading the Theme and Theme Options}
+
+  \begin{block}{The Color Theme}
+    Also you can load only the color theme by writing in the preamble of the {\tt tex} file 
+    
+    \vspace{5pt} 
+    
+    \begin{itemize}
+    \item {\tt \textbackslash usecolortheme\{Feather\}}
+    \end{itemize}
+    
+    \vspace{5pt}
+    
+    ...or to change the colors of the various elements in the theme
+    
+    \vspace{5pt} 
+    \begin{itemize}
+    \item Change the bar colors: \\    
+    {\tt \textbackslash setbeamercolor \{Feather\}\{fg=<color>, bg=<color>\}}
+    
+    \vspace{2pt} 
+    
+    \item Change the color of the structural elements: \\    
+    {\tt \textbackslash setbeamercolor\{structure\}\{fg=<color>\}}
+    
+    \vspace{2pt} 
+    
+    \item Change the frame title text color:\\
+    {\tt \textbackslash setbeamercolor\{frametitle\}\{fg=<color>\}}
+    
+    \vspace{2pt} 
+    
+    \item Change the normal text color background:    
+    {\tt \textbackslash setbeamercolor\{normal text\}\{fg=<color>, bg=<color>\}}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+%-------------------------------------------------------
+\subsection{Feather image}
+\begin{frame}{User Interface}{The Feather Background Image}
+%-------------------------------------------------------
+
+\begin{block}{The Feather Background Image}
+    \begin{itemize}
+    \item In Feather theme, the title page frame and the last frame have the Feather image as the background image. 
+    \item The Feather background image can be produced to any frame by wrating on the begining at the choosen frame the following
+    \end{itemize} 
+    
+    \vspace{5pt} 
+    
+  {\tt \{\textbackslash 1bg\\
+    \textbackslash begin\{frame\}[<options>]\{Frame Title\}\{Frame Subtitle\}\\
+    \ldots\\
+    \textbackslash end\{frame\}\}}
+\end{block}
+\end{frame}
+
+
+{\1
+\begin{frame}[plain,noframenumbering]
+  \finalpage{Q\&A}
+\end{frame}}
+
+\end{document}
