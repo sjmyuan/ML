@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#
+#bash for running tensorflow docker
+
+readonly IMAGE=jiamingshang/tensorflow:1
+readonly PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/" && pwd )"
+readonly HOME_DIR="$( cd ~ && pwd )"
+readonly KERAS_FOLDER="${HOME_DIR}/.docker_keras"
+
+if [[ ! -d ${KERAS_FOLDER} ]];then
+  mkdir ${KERAS_FOLDER}
+fi
+
+docker run --rm -t \
+  -v ${KERAS_FOLDER}:/root/.keras -v ${PROJECT_DIR}:/project -w "/project"  "${IMAGE}" $@
